@@ -1,0 +1,28 @@
+{
+	"name": "pfaciana/render-docs",
+	"version": "0.0.1",
+	"description": "Display HTML documentation pages from render-docs json data files",
+	"keywords": [],
+	"homepage": "https://renderdev.com/",
+	"license": "GPL-2.0-only",
+	"authors": [
+		{
+			"name": "Phil Faciana",
+			"email": "phil@renderdev.com",
+			"homepage": "https://renderdev.com/",
+			"role": "Developer"
+		}
+	],
+	"autoload": {
+		"files": [
+			"models/RenderDocs.php"
+		]
+	},
+	"repositories": [],
+	"require-dev": {},
+	"require": {
+		"ext-ctype": "*",
+		"ext-json": "*",
+		"mikecao/flight": "^1"
+	}
+}
