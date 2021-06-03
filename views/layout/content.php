@@ -46,7 +46,7 @@ function content ($instance)
 
 				<?= changelog_section($instance->getChangelog()) ?>
 
-				<?= options_section($instance->getOptions(), $instance->getRef() === 'functions' ? 'Options' : 'Details') ?>
+				<?= options_section($instance->getOptions(), 'Details') ?>
 
 				<?= notes_section($instance->getNotes()) ?>
 
