@@ -49,7 +49,7 @@ class Ref
 
 		$ns = $this->findNs($this->ref, $name, $ns, $strict ?? FALSE);
 
-		[$name, $attr] = is_array($name) ? $name : [$name, NULL];
+		[$name, $attr] = is_array($name) ? array_pad($name, 2, NULL) : [$name, NULL];
 
 		$this->name = $name;
 		$this->attr = $attr;
@@ -81,6 +81,7 @@ class Ref
 	{
 		$toc        = $this->rd->getToc();
 		$name       = is_array($name) ? $name[0] : $name;
+		$name       = is_array($name) ? (array_key_exists('name', $name) ? $name['name'] : $name[0]) : $name;
 		$parentRefs = static::getParentRefs($this->getRef($ref));
 
 		$namespaces = array_filter($strict ? [$ns] : [$ns, ($this->rd->ns ?? []), ['global']]);
