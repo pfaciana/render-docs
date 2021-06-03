@@ -1,6 +1,6 @@
 {
 	"name": "pfaciana/render-docs",
-	"version": "1.0.0",
+	"version": "1.0.1",
 	"description": "Display HTML documentation pages from render-docs json data files",
 	"keywords": [],
 	"homepage": "https://renderdev.com/",
