@@ -26,8 +26,8 @@ class ClassPage extends PageLayout
 
 		$links = array_merge($this->getPrevNextLinks($ns, $ref, $name), [
 			'links' => [
-				'All'                => \Urls::getDocsUrl(),
-				$this->projectName              => \Urls::getDocUrl(),
+				'All'                 => \Urls::getDocsUrl(),
+				$this->projectName    => \Urls::getDocUrl(),
 				$this->getNsHtml($ns) => \Urls::getDocUrl($ns),
 				$ref                  => \Urls::getDocUrl($ns, $ref),
 			],
@@ -100,6 +100,8 @@ class ClassPage extends PageLayout
 				<?php if (!empty($data['extends'])) :
 					$url = (new Ref('classes', $data['extends']))->getUrl();
 					$extends = $url ? '<a href="' . $url . '"><b>' . $data['extends'] . '</b></a>' : $data['extends'];
+					$extends = is_array($extends) ? $extends[0] : $extends;
+					$extends = is_array($extends) ? (array_key_exists('name', $extends) ? $extends['name'] : $extends[0]) : $extends;
 					?>
 					<span class="ooclass"><span class="modifier">extends </span><?= $extends ?></span>
 				<?php endif; ?>
