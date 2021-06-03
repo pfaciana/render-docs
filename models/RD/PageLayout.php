@@ -212,10 +212,8 @@ abstract class PageLayout
 
 		foreach ($tags as $tag) {
 			if (in_array($tag['tagName'], ['author', 'copyright', 'license', 'category', 'package', 'subpackage',])) {
-				$version = ($tag['tagName'] === 'version' ? $tag['type'] : $tag['desc']) ?? NULL;
-				$summary = $tag['tagName'] === 'deprecated' ? $tag['desc'] : '';
-
-				$options['data'][] = ['@' . $tag['tagName'], $version, $summary];
+				$summary           = ($tag['desc'] ?? '') . ($tag['type'] ? ' - ' . $tag['type'] : '');
+				$options['data'][] = ['@' . $tag['tagName'], $summary];
 			}
 		}
 
@@ -569,9 +567,9 @@ abstract class PageLayout
 		}
 
 		if (!empty($data['arguments'])) {
-			$paramTagName = array_column($paramTags, 'name');
+			$paramTagNames = array_column($paramTags, 'name');
 			foreach ($data['arguments'] as $arg) {
-				if (($index = array_search($arg['name'], $paramTagName)) !== FALSE) {
+				if (($index = array_search($arg['name'], $paramTagNames)) !== FALSE) {
 					unset($paramTags[$index]['name']);
 					$param = array_merge_recursive($arg, $paramTags[$index]);
 					if (!empty($param['type'])) {
@@ -729,9 +727,9 @@ abstract class PageLayout
 		];
 	}
 
-	protected function buildParamTable ($params)
+	protected function buildParamTable ($tags)
 	{
-		if (empty($params)) {
+		if (empty($tags)) {
 			return '';
 		}
 
@@ -746,23 +744,23 @@ abstract class PageLayout
 			</tr>
 			</thead>
 			<tbody class="tbody">
-			<?php foreach ($params as $param) : ?>
+			<?php foreach ($tags as $tag) : ?>
 				<tr>
-					<td><code class="parameter"><?= $this->getParamNamePrefixed($param, NULL) ?></code></td>
-					<td><span class="methodsynopsis"><span class="type"><?= $this->getVarTypes($param) ?></span></span></td>
+					<td><code class="parameter"><?= $this->getParamNamePrefixed($tag, NULL) ?></code></td>
+					<td><span class="methodsynopsis"><span class="type"><?= $this->getVarTypes($tag) ?></span></span></td>
 					<td><?php
-						if (!empty($param['desc'])) {
-							if (is_scalar($param['desc'])) {
-								echo $this->newLineToSpace($param['desc']);
+						if (!empty($tag['desc'])) {
+							if (is_scalar($tag['desc'])) {
+								echo $this->newLineToSpace($tag['desc']);
 							}
-							elseif (!empty($param['desc']['tags'])) {
-								echo $this->buildParamTable($param['desc']['tags']);
+							elseif (!empty($tag['desc']['tags'])) {
+								echo $this->buildParamTable($tag['desc']['tags']);
 							}
 						}
-						if (!array_key_exists('optional', $param)) {
-							$param['optional'] = TRUE;
+						if (!array_key_exists('optional', $tag)) {
+							$tag['optional'] = TRUE;
 						}
-						?><?= $this->getParamDefault($param, $value) ? ' <b>Default: <span class="initializer">' . (empty($value) || is_scalar($value) ? $this->var_export($value) : $this->buildParamTable($value)) . '</span></b>' : '' ?></td>
+						?><?= $this->getParamDefault($tag, $value) ? ' <b>Default: <span class="initializer">' . $this->var_export($value) . '</span></b>' : '' ?></td>
 				</tr>
 			<?php endforeach; ?>
 			</tbody>
